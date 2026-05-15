@@ -95,3 +95,30 @@ CREATE INDEX IF NOT EXISTS idx_event_logs_event_time  ON event_logs (event_time)
 ### 설계 이유
 -   **비즈니스 인사이트 추출**: 단순한 로그 적재가 아니라, 멤버십 등급(Gold/Silver/Bronze)이라는 **차원(Dimension)**과 매출액이라는 **측정값(Metric)**을 결합하여 실무에서 즉시 활용 가능한 '등급별 매출 리포트'를 생성하기 위함입니다.
 -   **유연한 스키마 (JSONB)**: 모든 이벤트가 가진 공통 속성은 컬럼으로 분리하고, 상품 정보나 결제 상세 정보 등 이벤트마다 구조가 다른 값은 `properties` (JSONB) 컬럼에 저장하여 정규화의 이점과 유연성을 동시에 확보했습니다.
+
+---
+전체 아키텍처 (Local Environment)
+
+현재 프로젝트는 Docker Compose를 통해 3개의 컨테이너가 유기적으로 작동합니다.
+
+```mermaid
+graph TD
+    subgraph "Ingestion Layer"
+        G[Generator]
+    end
+
+    subgraph "Storage Layer"
+        DB[(PostgreSQL)]
+        V[Volume: postgres_data]
+    end
+
+    subgraph "Analysis Layer"
+        A[Analyzer]
+        O[Output: .png file]
+    end
+
+    G -- "1. Create Users & Logs" --> DB
+    DB -- "2. Persist Data" --> V
+    A -- "3. Complex JOIN Query" --> DB
+    A -- "4. Visualize" --> O
+```
