@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: eventlog
+      POSTGRES_USER: user # 예시 사용자 이름
+      POSTGRES_PASSWORD: password # 예시 비밀번호
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  generator:
+    build: ./generator
+    environment:
+      DB_HOST: db
+      DB_NAME: eventlog
+      DB_USER: user # 예시 사용자 이름
+      DB_PASSWORD: password # 예시 비밀번호
+    depends_on:
+      - db
+
+  analyzer:
+    build: ./analysis
+    environment:
+      DB_HOST: db
+      DB_NAME: eventlog
+      DB_USER: user # 예시 사용자 이름
+      DB_PASSWORD: password # 예시 비밀번호
+    depends_on:
+      - db
+      - generator
+    volumes:
+      - ./output:/output
