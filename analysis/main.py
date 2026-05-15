@@ -65,14 +65,14 @@ def analyze():
     # 시각화
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
 
-    # 차트 1: 멤버십 등급별 매출 (RDBMS JOIN 실력을 보여주는 차트)
+    # 차트 1: 멤버십 등급별 매출
     ax1.bar(df_revenue['membership_level'], df_revenue['total_revenue'], color=['#FFD700', '#C0C0C0', '#CD7F32'])
-    ax1.set_title('Revenue by Membership Level (JOIN Query)', fontsize=14, fontweight='bold')
+    ax1.set_title('멤버십 등급별 매출', fontsize=14, fontweight='bold')
     ax1.set_ylabel('Total Revenue')
 
     # 차트 2: 트래픽 소스별 세션 비중
     ax2.pie(df_traffic['session_count'], labels=df_traffic['traffic_source'], autopct='%1.1f%%', startangle=140)
-    ax2.set_title('Sessions by Traffic Source', fontsize=14, fontweight='bold')
+    ax2.set_title('트래픽 소스별 세션 비중', fontsize=14, fontweight='bold')
 
     plt.tight_layout()
     output_path = '/output/rdbms_analysis.png'

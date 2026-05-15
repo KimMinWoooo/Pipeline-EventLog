@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: user # 예시 사용자 이름
       POSTGRES_PASSWORD: password # 예시 비밀번호
     volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
 
