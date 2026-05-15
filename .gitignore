@@ -16,6 +16,4 @@ Desktop.ini
 .idea/
 .vscode/
 
-# analysis output
-output/*
-!output/.gitkeep
+
